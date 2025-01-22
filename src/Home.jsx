@@ -5,7 +5,7 @@ function Home() {
     const [products, setProducts] = useState(null);
     async function fetchProducts() {
         try {
-            const response = await fetch('https://prg06-node-express.antwan.eu/spots/', {
+            const response = await fetch('http://145.24.223.60:8001/spgames', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'

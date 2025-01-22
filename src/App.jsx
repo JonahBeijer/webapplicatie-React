@@ -3,8 +3,8 @@ import {createBrowserRouter, RouterProvider} from "react-router";
 import Layout from "./Layout.jsx";
 import Home from "./Home.jsx";
 import About from "./About.jsx";
-import SpotDetail from "./SpotDetail.jsx";
-import SpotCreateForm from "./SpotCreateForm.jsx";
+import SpgameDetail from "./SpgameDetail.jsx";
+import SpgameCreateForm from "./SpgameCreateForm.jsx";
 
 const router = createBrowserRouter( [
     {
@@ -19,12 +19,14 @@ const router = createBrowserRouter( [
                 element: <About/>,
             },
             {
-                path: '/spots/create',
-                element: <SpotCreateForm/>,
+                path: '/spgames/create',
+                element: <SpgameCreateForm/>,
             },
+
             {
-                path: '/spots/:id',
-                element: <SpotDetail/>,
+                path: '/spgames/:id',
+                element: <SpgameDetail/>,
+
             },
         ]
     }

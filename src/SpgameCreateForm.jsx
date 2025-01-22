@@ -1,11 +1,11 @@
 import {  useState } from "react";
 
-function SpotCreateForm(){
+function SpgameCreateForm(){
 
         const [formData, setFormData] = useState({
             title: '',
-            description: '',
-            review: '',
+            body: '',
+            date: '',
         });
 
         const handleInputChange = (event) => {
@@ -57,18 +57,18 @@ function SpotCreateForm(){
                 <label htmlFor="description">Description:</label>
                 <input
                     type="text"
-                    id="description"
-                    name="description"
-                    value={formData.description}
+                    id="body"
+                    name="body"
+                    value={formData.body}
                     onChange={handleInputChange}
                 />
 
                 <label htmlFor="review">Review:</label>
                 <input
                     type="text"
-                    id="review"
-                    name="review"
-                    value={formData.review}
+                    id="date"
+                    name="date"
+                    value={formData.date}
                     onChange={handleInputChange}
                 />
 
@@ -78,4 +78,4 @@ function SpotCreateForm(){
     }
 
 
-export default SpotCreateForm
+export default SpgameCreateForm

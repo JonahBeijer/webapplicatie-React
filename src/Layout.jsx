@@ -7,7 +7,7 @@ function Layout(){
               <nav className=" flex gap-4">
                   <Link to={'/'} className="p-4 font-bold">Home</Link>
                   <Link to={'/about'} className="p-4 font-bold">About</Link>
-                  <Link to={'/spots/create'} className="p-4 font-bold">Create</Link>
+                  <Link to={'/spgames/create'} className="p-4 font-bold">Create</Link>
 
               </nav>
           </header>
