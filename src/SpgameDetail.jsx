@@ -1,10 +1,10 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import product from "./Product.jsx";
+import Spgame from "./Spgame.jsx";
 
 function SpgameDetail() {
     const { id } = useParams();
-    const [products, setProducts] = useState(null);
+    const [spgame, setSpgame] = useState(null);
     const [error, setError] = useState(null);
     console.log(id);
 
@@ -27,7 +27,7 @@ function SpgameDetail() {
             }
 
             const data = await response.json();
-            setProducts(data); // Pas aan op basis van jouw API-structuur
+            setSpgame(data); // Pas aan op basis van jouw API-structuur
         } catch (error) {
             setError('Er is een fout opgetreden: ' + error.message);
         }
@@ -36,10 +36,10 @@ function SpgameDetail() {
     return (
         <div>
             {error && <p>{error}</p>}
-            {products ? (
+            {spgame ? (
                 <div>
-                    <h1>{products.title}</h1>
-                    <p>{products.body}</p>
+                    <h1>{spgame.title}</h1>
+                    <p>{spgame.body}</p>
                 </div>
             ) : (
                 <p>Loading...</p>

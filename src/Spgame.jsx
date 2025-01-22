@@ -8,10 +8,10 @@ const truncateText = (text, wordLimit) => {
     return words.length > wordLimit ? `${truncated}...` : truncated;
 };
 
-function Product({ product, fetchProducts }) {
+function Spgame({ spgame, fetchSpgames }) {
     const deleteSpgame = async () => {
         try {
-            const response = await fetch(`http://145.24.223.60:8001/spgames/${product.id}`, {
+            const response = await fetch(`http://145.24.223.60:8001/spgames/${spgame.id}`, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ function Product({ product, fetchProducts }) {
             });
 
             if (response.status === 204) {
-                fetchProducts();
+                fetchSpgames();
             } else {
                 console.error("Failed to delete the Singleplayer game ");
             }
@@ -32,7 +32,7 @@ function Product({ product, fetchProducts }) {
     return (
         <article className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 duration-200">
             <section className="relative">
-                <div className="flex justify-center mb-16">
+                <div className="flex justify-center mb-4">
                     <img
                         src="/meerkat.jpg"
                         alt="Stokstaartje"
@@ -42,7 +42,7 @@ function Product({ product, fetchProducts }) {
                 </div>
                 <div className="absolute inset-0 bg-black opacity-30"></div>
                 <div className="absolute bottom-4 left-4 text-white">
-                    <h2 className="text-2xl font-semibold">{product.title}</h2>
+                    <h2 className="text-2xl font-semibold">{spgame.title}</h2>
                 </div>
             </section>
 
@@ -51,18 +51,18 @@ function Product({ product, fetchProducts }) {
                     <div className="mb-2">
                         <span className="font-semibold">Description:</span>
                     </div>
-                    <div className="text-sm text-gray-600">{truncateText(product.body, 15)}</div>
+                    <div className="text-sm text-gray-600">{truncateText(spgame.body, 15)}</div>
 
                     <div className="mb-2 mt-4">
                         <span className="font-semibold">Release Date:</span>
                     </div>
-                    <div className="text-sm text-gray-600">{product.date}</div>
+                    <div className="text-sm text-gray-600">{spgame.date}</div>
                 </div>
 
                 <div className="mt-4 flex flex-col gap-2">
                     <Link
                         className="border-2 border-black bg-white p-2 rounded-lg text-center font-semibold text-black hover:bg-gray-100 transition-colors"
-                        to={`/spgames/${product.id}`}>
+                        to={`/spgames/${spgame.id}`}>
                         Read More
                     </Link>
 
@@ -77,4 +77,4 @@ function Product({ product, fetchProducts }) {
     );
 }
 
-export default Product;
+export default Spgame;

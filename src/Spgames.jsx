@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Product from "./Product.jsx";
+import Spgame from "./Spgame.jsx";
 
 function Home() {
-    const [products, setProducts] = useState(null);
+    const [spgames, setSpgames] = useState(null);
 
-    async function fetchProducts() {
+    async function fetchSpgames() {
         try {
             const response = await fetch('http://145.24.223.60:8001/spgames', {
                 method: 'GET',
@@ -14,17 +14,17 @@ function Home() {
             });
 
             const data = await response.json();
-            setProducts(data.items); // Assuming `data.items` contains the list of spots
+            setSpgames(data.items); // Assuming `data.items` contains the list of spots
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         }
     }
 
     useEffect(() => {
-        fetchProducts(); // Call the async function inside useEffect
+        fetchSpgames(); // Call the async function inside useEffect
     }, []); // Empty dependency array ensures the effect runs only once
 
-    console.log(products);
+    console.log(spgames);
 
     return (
         <>
@@ -38,14 +38,14 @@ function Home() {
 
             <main className="py-8 px-4">
                 <h2 className="text-3xl font-semibold text-center mb-6">Onze Singleplayer games</h2>
-                {products ? (
+                {spgames ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {products.map((product) => (
-                            <Product key={product.id} product={product} fetchProducts={fetchProducts} />
+                        {spgames.map((spgame) => (
+                            <Spgame key={spgame.id} spgame={spgame} fetchSpgames={fetchSpgames} />
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center text-xl">Spots worden geladen...</div>
+                    <div className="text-center text-xl">Singleplayer games worden geladen...</div>
                 )}
             </main>
         </>
