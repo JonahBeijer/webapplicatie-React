@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import React from "react";
 
 const truncateText = (text, wordLimit) => {
     if (!text) return ""; // Controleer of de tekst bestaat
@@ -6,7 +7,6 @@ const truncateText = (text, wordLimit) => {
     const truncated = words.slice(0, wordLimit).join(" ");
     return words.length > wordLimit ? `${truncated}...` : truncated;
 };
-
 
 function Product({ product, fetchProducts }) {
     const deleteSpgame = async () => {
@@ -30,41 +30,48 @@ function Product({ product, fetchProducts }) {
     };
 
     return (
-        <article className="bg-amber-100 rounded-lg shadow-md p-4 max-w-sm mx-auto mb-2">
-            <section className="flex items-center space-x-4">
-                {/*<img*/}
-                {/*    className="w-20 h-20 rounded-full object-cover"*/}
-                {/*    src={product.imageUrl}*/}
-                {/*    alt={`${product.title} photo`}*/}
-                {/*/>*/}
-                <h2 className="text-xl font-bold text-gray-800">{product.title}</h2>
+        <article className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 duration-200">
+            <section className="relative">
+                <div className="flex justify-center mb-16">
+                    <img
+                        src="/meerkat.jpg"
+                        alt="Stokstaartje"
+                        className="rounded-xl shadow-lg w-full max-w-md"
+                    />
+
+                </div>
+                <div className="absolute inset-0 bg-black opacity-30"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                    <h2 className="text-2xl font-semibold">{product.title}</h2>
+                </div>
             </section>
-            <section className="mt-4 text-gray-700">
-                <div>
+
+            <section className="p-4">
+                <div className="text-gray-800">
                     <div className="mb-2">
                         <span className="font-semibold">Description:</span>
                     </div>
-                    <div>{truncateText(product.body, 7)}</div>
+                    <div className="text-sm text-gray-600">{truncateText(product.body, 15)}</div>
 
-                    <div className="mb-2 mt-2">
-                        <span className="font-semibold">Review:</span>
+                    <div className="mb-2 mt-4">
+                        <span className="font-semibold">Release Date:</span>
                     </div>
-                    <div>{truncateText(product.date, 7)}</div>
+                    <div className="text-sm text-gray-600">{product.date}</div>
                 </div>
 
-                <div className="mt-4 flex justify-center">
+                <div className="mt-4 flex flex-col gap-2">
                     <Link
-                        className="border-2 border-black font-semibold bg-white p-2 rounded-lg w-full text-center"
+                        className="border-2 border-black bg-white p-2 rounded-lg text-center font-semibold text-black hover:bg-gray-100 transition-colors"
                         to={`/spgames/${product.id}`}>
-                        Read more
+                        Read More
                     </Link>
-                </div>
 
-                <button
-                    onClick={deleteSpgame}
-                    className="border-2 border-black font-semibold p-2 rounded-lg w-full text-center bg-red-500">
-                    Delete
-                </button>
+                    <button
+                        onClick={deleteSpgame}
+                        className="border-2 border-red-500 text-white bg-red-500 p-2 rounded-lg text-center font-semibold hover:bg-red-600 transition-colors">
+                        Delete
+                    </button>
+                </div>
             </section>
         </article>
     );

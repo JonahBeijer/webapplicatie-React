@@ -5,6 +5,7 @@ import Home from "./Home.jsx";
 import About from "./About.jsx";
 import SpgameDetail from "./SpgameDetail.jsx";
 import SpgameCreateForm from "./SpgameCreateForm.jsx";
+import Spgames from "./Spgames.jsx";
 
 const router = createBrowserRouter( [
     {
@@ -13,6 +14,11 @@ const router = createBrowserRouter( [
             {
                 path: '/',
                 element: <Home/>
+            },
+            {
+                path: '/spgames/',
+                element: <Spgames/>,
+
             },
             {
                 path: '/about',
