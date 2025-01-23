@@ -5,18 +5,45 @@ function SpgameCreateForm() {
         title: '',
         body: '',
         date: '',
-        img_url: '', // Nieuw veld toegevoegd
+        img_url: '',
     });
+
+    const [error, setError] = useState('');
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+
+        if (name === "date") {
+            // Toestaan dat gebruikers blijven typen
+            const partialDateRegex = /^[0-9\-]*$/; // Alleen cijfers en streepjes toestaan
+            if (!partialDateRegex.test(value)) {
+                return; // Blokkeer andere invoer
+            }
+
+            // Controleer volledige datum op formaat
+            const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+            if (value && !dateRegex.test(value)) {
+                setError("Datum moet in het formaat dd-mm-yyyy zijn.");
+            } else {
+                setError(""); // Wis foutmelding als de datum klopt
+            }
+        }
+
+        // Formuliergegevens bijwerken
         setFormData({
             ...formData,
             [name]: value,
         });
-    }
+    };
+
 
     const postData = async () => {
+        const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+        if (!dateRegex.test(formData.date)) {
+            console.error("De datum is niet geldig. Zorg ervoor dat deze in het formaat dd-mm-yyyy is.");
+            return;
+        }
+
         try {
             const result = await fetch('http://145.24.223.60:8001/spgames', {
                 method: 'POST',
@@ -36,12 +63,12 @@ function SpgameCreateForm() {
         } catch (error) {
             console.error('Fout bij het versturen van de gegevens:', error);
         }
-    }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         postData();
-    }
+    };
 
     return (
         <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -95,8 +122,9 @@ function SpgameCreateForm() {
                         value={formData.date}
                         onChange={handleInputChange}
                         className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Voer de datum in"
+                        placeholder="dd-mm-yyyy"
                     />
+                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 </div>
 
                 <div className="flex justify-center">
