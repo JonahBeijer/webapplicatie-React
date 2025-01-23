@@ -34,24 +34,21 @@ function Spgame({ spgame, fetchSpgames }) {
             <section className="relative">
                 <div className="flex justify-center mb-4">
                     <img
-                        src="/meerkat.jpg"
-                        alt="Stokstaartje"
-                        className="rounded-xl shadow-lg w-full max-w-md"
+                        src={spgame.img_url}
+                        alt={spgame.title}
+                        className="rounded-xl shadow-lg w-full max-w-md h-48 object-cover"
                     />
 
-                </div>
-                <div className="absolute inset-0 bg-black opacity-30"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                    <h2 className="text-2xl font-semibold">{spgame.title}</h2>
+            </div>
+            <div className="absolute inset-0 bg-black opacity-30"></div>
+            <div className="absolute bottom-4 left-4 text-white">
+                <h2 className="text-2xl font-semibold">{spgame.title}</h2>
                 </div>
             </section>
 
             <section className="p-4">
                 <div className="text-gray-800">
-                    <div className="mb-2">
-                        <span className="font-semibold">Description:</span>
-                    </div>
-                    <div className="text-sm text-gray-600">{truncateText(spgame.body, 15)}</div>
+
 
                     <div className="mb-2 mt-4">
                         <span className="font-semibold">Release Date:</span>

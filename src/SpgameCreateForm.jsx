@@ -5,6 +5,7 @@ function SpgameCreateForm() {
         title: '',
         body: '',
         date: '',
+        img_url: '', // Nieuw veld toegevoegd
     });
 
     const handleInputChange = (event) => {
@@ -69,6 +70,19 @@ function SpgameCreateForm() {
                         onChange={handleInputChange}
                         className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Geef een beschrijving van het spel"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="img_url" className="block text-gray-700 font-medium">Image URL:</label>
+                    <input
+                        type="text"
+                        id="img_url"
+                        name="img_url"
+                        value={formData.img_url}
+                        onChange={handleInputChange}
+                        className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Voer de URL van de afbeelding in"
                     />
                 </div>
 
