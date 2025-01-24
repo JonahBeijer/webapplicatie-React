@@ -5,13 +5,13 @@ function SpgameDetail() {
     const { id } = useParams();
     const [spgame, setSpgame] = useState(null);
     const [error, setError] = useState(null);
-    const [showModal, setShowModal] = useState(false); // Voor modal
+    const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         body: "",
         date: "",
         img_url: "",
-    }); // Formulierdata
+    });
 
     useEffect(() => {
         loadSpgame();
@@ -32,30 +32,38 @@ function SpgameDetail() {
             }
 
             const data = await response.json();
+
+            // Zet de datum om naar yyyy-mm-dd formaat
+            const formattedDate = formatDateForInput(data.date);
+
             setSpgame(data);
 
-            // Zet de datum om naar yyyy-mm-dd formaat voor het formulier
-            const formattedDate = formatDateForInput(data.date);
             setFormData({
                 title: data.title,
                 body: data.body,
-                date: formattedDate, // Formatteer naar yyyy-mm-dd
+                date: formattedDate, // Gebruik de geformatteerde datum hier
                 img_url: data.img_url,
             });
-
         } catch (error) {
             setError("Er is een fout opgetreden: " + error.message);
         }
     }
 
-    // Functie om de datum om te zetten naar yyyy-mm-dd voor de input
+
+    // Functie om de datum om te zetten naar yyyy-mm-dd voor het inputveld
+    // Functie om de datum te formatteren voor het inputveld (yyyy-mm-dd)
     function formatDateForInput(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`; // yyyy-mm-dd formaat voor de input
+        if (!dateString) return ""; // Als de datum leeg is, retourneer een lege string
+        const parts = dateString.split("-");
+
+        if (parts.length === 3) {
+            const [day, month, year] = parts; // Aannemen dat de datum als dd-mm-yyyy binnenkomt
+            return `${year}-${month}-${day}`; // Omzetten naar yyyy-mm-dd
+        }
+
+        return dateString; // Als de datum al in yyyy-mm-dd is, niets doen
     }
+
 
     // Handeling van formulier wijzigingen
     function handleInputChange(e) {
@@ -67,10 +75,10 @@ function SpgameDetail() {
     async function handleUpdate(e) {
         e.preventDefault();
 
-        // Zet de datum om naar yyyy-mm-dd formaat voor de PATCH-aanvraag
+        // Zorg dat de datum wordt geformatteerd vóór verzending
         const formattedDate = formatDateForRequest(formData.date);
 
-        // Werk de formulierdata bij met de geformatteerde datum
+        // Maak een kopie van het formData-object en vervang de datum door de geformatteerde datum
         const updatedData = { ...formData, date: formattedDate };
 
         try {
@@ -88,7 +96,13 @@ function SpgameDetail() {
             }
 
             const data = await response.json();
-            setSpgame(data); // Update de weergave
+
+            // Update alleen de gewijzigde eigenschappen in `spgame`
+            setSpgame((prev) => ({
+                ...prev,
+                ...updatedData,
+            }));
+
             setShowModal(false); // Sluit de modal
         } catch (error) {
             setError("Er is een fout opgetreden bij het bijwerken: " + error.message);
@@ -97,9 +111,13 @@ function SpgameDetail() {
 
     // Functie om de datum om te zetten naar yyyy-mm-dd voor de PATCH-aanvraag
     function formatDateForRequest(dateString) {
-        const [day, month, year] = dateString.split('-');
-        return `${year}-${month}-${day}`; // yyyy-mm-dd
+        const [day, month, year] = dateString.split("-"); // Splits de dag, maand, jaar
+        return `${year}-${month}-${day}`; // Zet om naar yyyy-MM-dd
     }
+
+    useEffect(() => {
+        console.log("formData: ", formData); // Controleer of de datum goed in formData staat
+    }, [formData]);
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
@@ -135,10 +153,10 @@ function SpgameDetail() {
                             onClick={() => {
                                 setShowModal(true);
                                 setFormData({
-                                    title: spgame.title,
-                                    body: spgame.body,
-                                    date: spgame.date,
-                                    img_url: spgame.img_url,
+                                    title: data.title,
+                                    body: data.body,
+                                    date: formatDateForInput(data.date), // Format de datum hier
+                                    img_url: data.img_url,
                                 });
                             }}
                         >
@@ -201,14 +219,15 @@ function SpgameDetail() {
                                     type="date"
                                     id="date"
                                     name="date"
-                                    value={formData.date}
+                                    value={formData.date || ""} // Zorgt ervoor dat het veld nooit "undefined" is
                                     onChange={handleInputChange}
                                     className="w-full border rounded-lg p-2"
                                 />
+
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="img_url" className="block text-gray-700 font-semibold mb-2">
-                                    Afbeeldings-URL
+                                Afbeeldings-URL
                                 </label>
                                 <input
                                     type="text"
