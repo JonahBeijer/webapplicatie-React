@@ -148,8 +148,9 @@ function SpgameDetail() {
                         </p>
 
                         {/* Bewerkknop */}
+                        <div className="mt-4 flex flex-col gap-2">
                         <button
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                            className="border-2 border-black bg-white p-2 rounded-lg text-center font-semibold text-black hover:bg-gray-100 transition-colors"
                             onClick={() => {
                                 setShowModal(true);
                                 setFormData({
@@ -162,6 +163,7 @@ function SpgameDetail() {
                         >
                             Bewerk
                         </button>
+                        </div>
 
                         {/* Terugknop */}
                         <div className="mt-4 flex flex-col gap-2">

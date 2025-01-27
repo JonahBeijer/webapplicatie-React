@@ -50,9 +50,9 @@ function Spgame({ spgame, fetchSpgames }) {
                 <div className="text-gray-800">
 
 
-                    <div className="mb-2 mt-4">
+
                         <span className="font-semibold">Release Date:</span>
-                    </div>
+
                     <div className="text-sm text-gray-600">{spgame.date}</div>
                 </div>
 
