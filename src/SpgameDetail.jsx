@@ -1,8 +1,6 @@
-import { Link, useParams } from "react-router";
 import React, { useEffect, useState } from "react";
 
 function SpgameDetail() {
-    const { id } = useParams();
     const [spgame, setSpgame] = useState(null);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -12,10 +10,21 @@ function SpgameDetail() {
         date: "",
         img_url: "",
     });
+    const [previousUrl, setPreviousUrl] = useState(""); // Opslaan van de vorige URL
+    const [isEditing, setIsEditing] = useState(false); // State om bij te houden of we in bewerkingsmodus zijn
+
+    const id = window.location.pathname.split('/')[2]; // Haal het id op uit de URL
 
     useEffect(() => {
         loadSpgame();
     }, [id]);
+
+    useEffect(() => {
+        // Als we van de bewerkingspagina afgaan, reset dan de URL naar de originele
+        if (!isEditing) {
+            window.history.pushState(null, "", previousUrl);
+        }
+    }, [isEditing, previousUrl]);
 
     async function loadSpgame() {
         try {
@@ -33,15 +42,13 @@ function SpgameDetail() {
 
             const data = await response.json();
 
-            // Zet de datum om naar yyyy-mm-dd formaat
             const formattedDate = formatDateForInput(data.date);
 
             setSpgame(data);
-
             setFormData({
                 title: data.title,
                 body: data.body,
-                date: formattedDate, // Gebruik de geformatteerde datum hier
+                date: formattedDate,
                 img_url: data.img_url,
             });
         } catch (error) {
@@ -49,36 +56,25 @@ function SpgameDetail() {
         }
     }
 
-
-    // Functie om de datum om te zetten naar yyyy-mm-dd voor het inputveld
-    // Functie om de datum te formatteren voor het inputveld (yyyy-mm-dd)
     function formatDateForInput(dateString) {
-        if (!dateString) return ""; // Als de datum leeg is, retourneer een lege string
+        if (!dateString) return "";
         const parts = dateString.split("-");
-
         if (parts.length === 3) {
-            const [day, month, year] = parts; // Aannemen dat de datum als dd-mm-yyyy binnenkomt
-            return `${year}-${month}-${day}`; // Omzetten naar yyyy-mm-dd
+            const [day, month, year] = parts;
+            return `${year}-${month}-${day}`;
         }
-
-        return dateString; // Als de datum al in yyyy-mm-dd is, niets doen
+        return dateString;
     }
 
-
-    // Handeling van formulier wijzigingen
     function handleInputChange(e) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     }
 
-    // Verzenden van PATCH-verzoek
     async function handleUpdate(e) {
         e.preventDefault();
 
-        // Zorg dat de datum wordt geformatteerd vóór verzending
         const formattedDate = formatDateForRequest(formData.date);
-
-        // Maak een kopie van het formData-object en vervang de datum door de geformatteerde datum
         const updatedData = { ...formData, date: formattedDate };
 
         try {
@@ -97,27 +93,38 @@ function SpgameDetail() {
 
             const data = await response.json();
 
-            // Update alleen de gewijzigde eigenschappen in `spgame`
             setSpgame((prev) => ({
                 ...prev,
                 ...updatedData,
             }));
 
-            setShowModal(false); // Sluit de modal
+            setShowModal(false);
+            setIsEditing(false); // Zet bewerkingsmodus uit
         } catch (error) {
             setError("Er is een fout opgetreden bij het bijwerken: " + error.message);
         }
     }
 
-    // Functie om de datum om te zetten naar yyyy-mm-dd voor de PATCH-aanvraag
     function formatDateForRequest(dateString) {
-        const [day, month, year] = dateString.split("-"); // Splits de dag, maand, jaar
-        return `${year}-${month}-${day}`; // Zet om naar yyyy-MM-dd
+        const [day, month, year] = dateString.split("-");
+        return `${year}-${month}-${day}`;
     }
 
-    useEffect(() => {
-        console.log("formData: ", formData); // Controleer of de datum goed in formData staat
-    }, [formData]);
+    function handleEditClick() {
+        setPreviousUrl(window.location.pathname); // Sla de vorige URL op
+        window.history.pushState(null, "", `/spgames/${id}/edit`); // Wijzig de URL naar de edit-pagina
+        setShowModal(true);
+        setIsEditing(true); // Zet bewerkingsmodus aan
+    }
+
+    // Annuleer bewerking en zet de URL terug naar de oorspronkelijke
+    function handleCancelClick() {
+        if (showModal) { // Check of de bewerkingsmodus actief is
+            window.history.pushState(null, "", previousUrl); // Zet de URL terug naar de vorige
+            setShowModal(false);
+        }
+    }
+
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
@@ -128,7 +135,6 @@ function SpgameDetail() {
             )}
             {spgame ? (
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden w-full max-w-lg">
-                    {/* Dynamische afbeelding */}
                     <div className="relative">
                         <img
                             src={spgame.img_url}
@@ -137,42 +143,27 @@ function SpgameDetail() {
                         />
                     </div>
 
-                    {/* Content */}
                     <div className="p-6">
                         <h1 className="text-2xl font-bold text-gray-800 mb-4">{spgame.title}</h1>
-                        <p className="text-gray-700 text-base leading-relaxed mb-6">
-                            {spgame.body}
-                        </p>
-                        <p className="text-gray-700 text-base leading-relaxed mb-6">
-                            {spgame.date}
-                        </p>
+                        <p className="text-gray-700 text-base leading-relaxed mb-6">{spgame.body}</p>
+                        <p className="text-gray-700 text-base leading-relaxed mb-6">{spgame.date}</p>
 
-                        {/* Bewerkknop */}
                         <div className="mt-4 flex flex-col gap-2">
-                        <button
-                            className="border-2 border-black bg-white p-2 rounded-lg text-center font-semibold text-black hover:bg-gray-100 transition-colors"
-                            onClick={() => {
-                                setShowModal(true);
-                                setFormData({
-                                    title: data.title,
-                                    body: data.body,
-                                    date: formatDateForInput(data.date), // Format de datum hier
-                                    img_url: data.img_url,
-                                });
-                            }}
-                        >
-                            Bewerk
-                        </button>
+                            <button
+                                className="border-2 border-black bg-white p-2 rounded-lg text-center font-semibold text-black hover:bg-gray-100 transition-colors"
+                                onClick={handleEditClick}
+                            >
+                                Bewerk
+                            </button>
                         </div>
 
-                        {/* Terugknop */}
                         <div className="mt-4 flex flex-col gap-2">
-                            <Link
+                            <a
+                                href={`/spgames/`}
                                 className="border-2 border-black bg-white p-2 rounded-lg text-center font-semibold text-black hover:bg-gray-100 transition-colors"
-                                to={`/spgames/`}
                             >
                                 Terug
-                            </Link>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -182,7 +173,6 @@ function SpgameDetail() {
                 </div>
             )}
 
-            {/* Modal Pop-up */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
@@ -221,15 +211,14 @@ function SpgameDetail() {
                                     type="date"
                                     id="date"
                                     name="date"
-                                    value={formData.date || ""} // Zorgt ervoor dat het veld nooit "undefined" is
+                                    value={formData.date || ""}
                                     onChange={handleInputChange}
                                     className="w-full border rounded-lg p-2"
                                 />
-
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="img_url" className="block text-gray-700 font-semibold mb-2">
-                                Afbeeldings-URL
+                                    Afbeeldings-URL
                                 </label>
                                 <input
                                     type="text"
@@ -244,7 +233,7 @@ function SpgameDetail() {
                                 <button
                                     type="button"
                                     className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg"
-                                    onClick={() => setShowModal(false)}
+                                    onClick={handleCancelClick} // Annuleer bewerking
                                 >
                                     Annuleer
                                 </button>

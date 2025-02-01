@@ -1,12 +1,7 @@
 import { Link } from "react-router";
 import React from "react";
 
-const truncateText = (text, wordLimit) => {
-    if (!text) return ""; // Controleer of de tekst bestaat
-    const words = text.split(" ");
-    const truncated = words.slice(0, wordLimit).join(" ");
-    return words.length > wordLimit ? `${truncated}...` : truncated;
-};
+
 
 function Spgame({ spgame, fetchSpgames }) {
     const deleteSpgame = async () => {
