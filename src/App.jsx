@@ -28,8 +28,12 @@ const router = createBrowserRouter([
                 element: <SpgameCreateForm />,
             },
             {
-                path: '/spgames/:id',
+                path: '/spgames/:id', // Voor het tonen van een specifieke game
                 element: <SpgameDetail />,
+            },
+            {
+                path: '/spgames/:id/edit', // Nieuwe route voor bewerken van een game
+                element: <SpgameDetail />, // Zelfde component, maar je kunt extra logica toevoegen om te controleren of het een bewerkingsmodus is
             },
             {
                 path: '*', // Deze route vangt alle niet-herkende URL's op
