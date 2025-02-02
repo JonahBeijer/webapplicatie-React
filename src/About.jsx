@@ -49,10 +49,6 @@ function About() {
                 </section>
             </main>
 
-            {/* Footer */}
-            <footer className="mt-16 text-center bg-[#2f1c75] py-6 text-gray-400">
-                <p>&copy; 2025 Meerkat Gaming. Alle rechten voorbehouden.</p>
-            </footer>
         </div>
     );
 }

@@ -172,7 +172,7 @@ function SpgameDetail() {
             ) : spgame ? (
 
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden w-full max-w-lg">
-                    <div className="relative">
+                    <div className="relative ml-8 mt-8">
                         <img
                             src={spgame.img_url}
                             alt={spgame.title}
@@ -181,7 +181,7 @@ function SpgameDetail() {
                     </div>
 
                     <div className="p-6">
-                        <div className="flex items-center justify-center mr-20 ml-6">
+                        <div className="flex items-center justify-center mr-20 ml-6 mb-2">
                             <span className="font-semibold">Rating:</span>
                             <div className="flex space-x-2 items-center justify-center">
                                 {renderStars(spgame.review)} {/* Render stars based on review */}
@@ -189,6 +189,7 @@ function SpgameDetail() {
                         </div>
                         <h1 className="text-2xl font-bold text-gray-800 mb-4">{spgame.title}</h1>
                         <p className="text-gray-700 text-base leading-relaxed mb-6">{spgame.body}</p>
+                        <span className="font-semibold">Release date:</span>
                         <p className="text-gray-700 text-base leading-relaxed mb-6">{spgame.date}</p>
 
                         <div className="mt-4 flex flex-col gap-2">

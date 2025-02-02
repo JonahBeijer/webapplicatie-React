@@ -78,7 +78,7 @@ function Spgame({ spgame, onDelete }) {
 
                     <button
                         onClick={deleteSpgame}
-                        className="border-2 border-red-500 text-white bg-red-500 p-2 rounded-lg text-center font-semibold hover:bg-red-600 transition-colors">
+                        className="border-2 border-[#d9a7ff] text-white bg-[#d9a7ff] p-2 rounded-lg text-center font-semibold hover:bg-[#7d47dd] transition-colors">
                         Delete
                     </button>
                 </div>

@@ -9,6 +9,7 @@ function Home() {
     const [totalPages, setTotalPages] = useState(0);
     const [ratingFilter, setRatingFilter] = useState(0); // Rating filter
     const [searchQuery, setSearchQuery] = useState(''); // Search query
+    const [transitioning, setTransitioning] = useState(false);
 
     // Fetch all games from the API
     const fetchSpgames = async () => {
@@ -106,13 +107,21 @@ function Home() {
 
     const nextPage = () => {
         if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
+            setTransitioning(true); // Set transition state to true
+            setTimeout(() => {
+                setCurrentPage(currentPage + 1);
+                setTransitioning(false); // Set transitioning back to false after transition
+            }, 300); // Match the duration of the transition
         }
     };
 
     const prevPage = () => {
         if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+            setTransitioning(true); // Set transition state to true
+            setTimeout(() => {
+                setCurrentPage(currentPage - 1);
+                setTransitioning(false); // Set transitioning back to false after transition
+            }, 300); // Match the duration of the transition
         }
     };
 
@@ -129,8 +138,8 @@ function Home() {
                 <div className="absolute inset-0 bg-cover bg-center opacity-70" style={{ backgroundImage: "url('/spgames-achter.png')" }}></div>
                 <div className="absolute inset-0 bg-black bg-opacity-50"></div>
                 <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
-                    <h1 className="text-5xl font-extrabold text-[#d9a7ff]">Dit zijn de favoriete van Meerkat Gaming!</h1>
-                    <p className="mt-4 text-2xl text-[#f0c8f0]">Ontdek de spannendste singleplayer games!</p>
+                    <h1 className="text-5xl font-extrabold text-[#d9a7ff]">Dit zijn de reviews van Meerkat Gaming!</h1>
+                    <p className="mt-4 text-2xl text-[#f0c8f0]">Ontdek singleplayer games voor jou!</p>
                 </div>
             </header>
 
@@ -175,7 +184,7 @@ function Home() {
 
                 {/* Display filtered games */}
                 {paginatedSpgames.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 ${transitioning ? 'transition-opacity duration-300 opacity-50' : 'opacity-100'}`}>
                         {paginatedSpgames.map((spgame) => (
                             <Spgame key={spgame.id} spgame={spgame} onDelete={onDelete} />
                         ))}
