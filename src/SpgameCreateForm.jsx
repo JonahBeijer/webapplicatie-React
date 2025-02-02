@@ -113,10 +113,10 @@ function SpgameCreateForm() {
             {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
             <form onSubmit={handleSubmit}>
                 {Object.entries({
-                    title: "Title",
-                    body: "Description",
-                    img_url: "Image URL",
-                    date: "Date (dd-mm-yyyy)",
+                    title: "Titel",
+                    body: "Beschrijving",
+                    img_url: "Foto URL",
+                    date: "Datum (dd-mm-jjjj)",
                     review: "Review van sterren (1-5)",
                 }).map(([name, label]) => (
                     <div className="mb-4" key={name}>
